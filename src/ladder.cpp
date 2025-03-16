@@ -9,6 +9,10 @@ bool edit_distance_within(const std::string& str1, const std::string& str2, int 
     int word1len = str1.length();
     int word2len = str2.length();
 
+    if (abs(word1len - word2len) > d) {
+        return false;
+    }
+
     if (str1 == str2) {
         return true;
     }
