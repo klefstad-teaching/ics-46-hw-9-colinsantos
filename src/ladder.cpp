@@ -4,6 +4,56 @@ void error(string word1, string word2, string msg) {
     std::cout << "Error: Words " << word1 << ", " << word2 << ": " << msg << std::endl;
 }
 
+bool edit_distance_within(const std::string& str1, const std::string& str2, int d) {
+    int diff = 0;
+    int word1len = str1.length();
+    int word2len = str2.length();
+
+    if (str1 == str2) {
+        return true;
+    }
+
+    if (word1len == word2len) {
+        for (int i = 0; i < word1len; ++i) {
+            if (str1[i] != str2[i]) {
+                ++diff;
+
+                if (diff > d) {
+                    return false;
+                }
+            }
+        }
+    } else {
+        int i = 0;
+        int j = 0;
+
+        while (i < word1len && j < word2len) {
+            if (str1[i] != str2[j]) {
+                ++diff;
+
+                if (diff > d) {
+                    return false;
+                }
+
+                if (word1len > word2len) {
+                    ++i;
+                } else if (word1len < word2len) {
+                    ++j;
+                }
+            } else {
+                ++i;
+                ++j;
+            }
+        }
+
+        if (i < word1len || j < word2len) {
+            ++diff;
+        }
+    }
+
+    return diff <= d;
+}
+
 bool is_adjacent(const string& word1, const string& word2) {
     int diff = 0;
     int word1len = word1.length();
@@ -105,4 +155,26 @@ void print_word_ladder(const vector<string>& ladder) {
     for (string s : ladder) {
         std::cout << s << endl;
     }
+}
+
+#define my_assert(e) {cout << #e << ((e) ? " passed": " failed") << endl;}
+
+void verify_word_ladder() {
+
+    set<string> word_list;
+
+    load_words(word_list, "words.txt");
+
+    my_assert(generate_word_ladder("cat", "dog", word_list).size() == 4);
+
+    my_assert(generate_word_ladder("marty", "curls", word_list).size() == 6);
+
+    my_assert(generate_word_ladder("code", "data", word_list).size() == 6);
+
+    my_assert(generate_word_ladder("work", "play", word_list).size() == 6);
+
+    my_assert(generate_word_ladder("sleep", "awake", word_list).size() == 8);
+
+    my_assert(generate_word_ladder("car", "cheat", word_list).size() == 4);
+
 }
