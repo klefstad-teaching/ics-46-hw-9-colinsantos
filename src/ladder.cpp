@@ -59,6 +59,16 @@ bool is_adjacent(const string& word1, const string& word2) {
 }
 
 vector<string> generate_word_ladder(const string &begin_word, const string &end_word, const set<string> &word_list) {
+    if (begin_word == end_word) {
+        error(begin_word, end_word, "Cannot be the same words");
+        return std::vector<string>();
+    }
+
+    if (word_list.find(end_word) == word_list.end()) {
+        error(begin_word, end_word, "Cannot find second word in dictionary");
+        return std::vector<string>();
+    }
+
     std::queue<vector<string>> ladder_queue;
 
     std::vector<string> v;
