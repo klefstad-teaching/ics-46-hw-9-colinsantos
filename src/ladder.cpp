@@ -90,3 +90,19 @@ vector<string> generate_word_ladder(const string &begin_word, const string &end_
 
     return std::vector<string>();
 }
+
+void load_words(set<string> & word_list, const string& file_name) {
+    ifstream in(file_name);
+
+    for (string word; (in >> word);) {
+        word_list.insert(word);
+    }
+
+    in.close();
+}
+
+void print_word_ladder(const vector<string>& ladder) {
+    for (string s : ladder) {
+        std::cout << s << endl;
+    }
+}
